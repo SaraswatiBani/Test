@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ne" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>श्री सरस्वती माध्यमिक विद्यालय</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .nav-btn {
+      font-size: 2rem;
+      color: #1e40af;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.3s;
+    }
+    .nav-btn:hover {
+      transform: scale(1.2);
+    }
+    .download-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #1e40af;
+      z-index: 10;
+    }
+    .hide {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-blue-900 text-white py-4 shadow-md">
+    <div class="container mx-auto px-4 flex items-center justify-between">
+      <img src="https://i.postimg.cc/8P4P7L4m/Chat-GPT-Image-May-17-2025-07-46-57-AM.png" alt="School Logo" class="h-20 w-20 rounded-full" />
+      <div class="text-center flex-1">
+        <h1 class="text-2xl md:text-3xl font-bold">श्री सरस्वती माध्यमिक विद्यालय</h1>
+        <p class="text-2xl"><u>कर्मचारी परिचय</u></p>
+      </div>
+      <img src="https://i.postimg.cc/NFDKq9w6/Flag-of-Nepal-ezgif-com-gif-maker-1.gif" alt="Nepal Flag" class="h-20 w-12 object-contain" />
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-grow flex items-center justify-center relative">
+    <div class="flex items-center justify-center w-full max-w-5xl px-4 overflow-hidden">
+      <div class="nav-btn mr-4" onclick="prevCard()">⟨</div>
+      <div id="cardWrapper" class="relative w-full max-w-sm mx-auto touch-pan-x"></div>
+      <div class="nav-btn ml-4" onclick="nextCard()">⟩</div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white text-center py-3 mt-auto">
+    <p>© <script>document.write(new Date().getFullYear())</script> श्री सरस्वती माध्यमिक विद्यालय</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    const teachers = [
+      {
+        name: "अम्भा दत्त बणु",
+        gender: "शिक्षक",
+        position: "प्रधानाध्यापक",
+        education: "MSC(Maths)",
+        subject: "गणित/विज्ञान (Maths/Science)",
+        experience: "२२ वर्ष (22 years)",
+        phone: "+९७७९८६०७२०४०४",
+        rawPhone: "+9779860720404",
+        image: "https://i.postimg.cc/DZn4zJKM/Screenshot-20250519-213637-2.png"
+      },
+      {
+        name: "लोकेन्द् ऐर",
+        gender: "शिक्षक",
+        position: "शिक्षक",
+        education: "BCA",
+        subject: "Computer",
+        experience: "११ वर्ष (11 years)",
+        phone: "+९७७९८६८७८०२५८",
+        rawPhone: "+9779868780258",
+        image: "https://i.postimg.cc/5NB0X9sc/Screenshot-20250523-161314-2.png"
+      },
+      {
+        name: "महेन्द् बोहरा",
+        gender: "शिक्षक",
+        position: "शिक्षक",
+        education: "MAB",
+        subject: "English",
+        experience: "१५ वर्ष (15 years)",
+        phone: "+९७७९८४८८८००१८",
+        rawPhone: "+9779848880018",
+        image: "https://i.postimg.cc/vBc8bk8D/FB-IMG-1747998267827-2.jpg"
+      },
+      {
+        name: "गोपाल दत्त भट्ट ",
+        gender: "शिक्षक",
+        position: "शिक्षक",
+        education: "MBS",
+        subject: "व्यवस्थापक (Accountant)",
+        experience: "१५ वर्ष (15 years)",
+        phone: "+९७७९७६२३०६७५५",
+        rawPhone: "+9779762306755",
+        image: "https://i.postimg.cc/v8WmdJ6j/Picsart-25-05-17-21-06-57-284.jpg"
+      },
+      {
+        name: "रेखा जोशी",
+        gender: "शिक्षिका",
+        position: "शिक्षिका",
+        education: "B.ED",
+        subject: "नेपाली (Nepali)",
+        experience: "१३ वर्ष  (13 years)",
+        phone: "+९७७९८२०२४२१४४",
+        rawPhone: "+9779820242144",
+        image: "https://i.postimg.cc/Qt8gynVC/1747996759086-2.jpg"
+      },
+      {
+        name: "सरस्वती भट्ट ",
+        gender: "शिक्षिका",
+        position: "शिक्षिका",
+        education: "M.A",
+        subject: "नेपाली (Nepali)",
+        experience: "८ वर्ष (8 years)",
+        phone: "+९७७९८४८७७२३७१",
+        rawPhone: "+9779848772371",
+        image: "https://i.postimg.cc/MpYmmSKN/Screenshot-20250523-162931-2.png"
+      }
+    ];
+
+    let currentIndex = 0;
+    const wrapper = document.getElementById("cardWrapper");
+
+    function showCard(index) {
+      wrapper.innerHTML = "";
+
+      const t = teachers[index];
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-xl shadow-lg px-4 pt-10 pb-6 w-full max-w-sm text-center border border-gray-300 relative";
+      card.id = "teacherCard";
+
+      card.innerHTML = `
+        <span class="download-btn" id="downloadBtn" onclick="downloadCard()" aria-label="Download ID card" title="Download">⬇</span>
+        <img src="${t.image}" alt="Teacher Photo" class="w-32 h-32 rounded-full mx-auto mb-3 object-cover border-4 border-blue-500" crossorigin="anonymous" />
+        <h2 class="text-xl font-bold text-blue-900 mt-2">${t.gender}: ${t.name}</h2>
+        <p class="text-sm text-gray-700">${t.position}</p>
+        <div class="mt-4 text-sm text-gray-800 space-y-1">
+          <p><strong>🎓 शिक्षा:</strong> ${t.education}</p>
+          <p><strong>📘 विषय:</strong> ${t.subject}</p>
+          <p><strong>📅 अनुभव:</strong> ${t.experience}</p>
+          <p><strong>📞 मोबाइल:</strong> <a href="tel:${t.rawPhone}" class="text-blue-700 underline">${t.phone}</a></p>
+        </div>
+        <div class="mt-4 text-center text-xs text-gray-500 border-t pt-2">
+          श्री सरस्वती मा. वि. | कृष्णपुर-०२, कञ्चनपुर
+        </div>
+      `;
+
+      wrapper.appendChild(card);
+    }
+
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % teachers.length;
+      showCard(currentIndex);
+    }
+
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + teachers.length) % teachers.length;
+      showCard(currentIndex);
+    }
+
+    function downloadCard() {
+      const card = document.getElementById("teacherCard");
+      const downloadBtn = document.getElementById("downloadBtn");
+      downloadBtn.style.visibility = "hidden"; // hide without flicker
+
+      html2canvas(card, { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `${teachers[currentIndex].name}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        downloadBtn.style.visibility = "visible";
+      });
+    }
+
+    // Auto Slide
+    setInterval(() => {
+      nextCard();
+    }, 7000);
+
+    // Touch gesture support
+    let startX = 0;
+    wrapper.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    });
+    wrapper.addEventListener("touchend", (e) => {
+      const endX = e.changedTouches[0].clientX;
+      if (endX < startX - 50) nextCard();
+      if (endX > startX + 50) prevCard();
+    });
+
+    // Initial card
+    showCard(currentIndex);
+  </script>
+</body>
+</html>
